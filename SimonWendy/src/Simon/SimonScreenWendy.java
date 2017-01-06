@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import GUIpractice.ClickableScreen;
-import GUIpractice.WhackAMole.MoleInterface;
-import GUIpractice.WhackAMole.PlayerInterface;
 import GUIpractice.components.Action;
 import GUIpractice.components.Button;
 import GUIpractice.components.TextLabel;
