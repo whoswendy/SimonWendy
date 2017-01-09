@@ -8,7 +8,7 @@ import GUIpractice.components.Action;
 import GUIpractice.components.Button;
 import GUIpractice.components.TextLabel;
 import GUIpractice.components.Visible;
-import simon.ButtonInterfaceRichard;
+
 
 public class SimonScreenWendy extends ClickableScreen implements Runnable{
 	
@@ -85,12 +85,13 @@ public class SimonScreenWendy extends ClickableScreen implements Runnable{
 		
 		Color[] color = {Color.blue, Color.green, Color.yellow, Color.black, Color.red, Color.cyan};
 		for(int i = 0; i < numberOfButtons; i++){
+			buttons[i] = getAButton();
+			buttons[i].setColor(color[i]);
+			buttons[i].setX((int) (i * 100 * Math.sin(Math.PI/3)));//x=rsin(beta)
+			buttons[i].setY((int) (i * 100 * Math.cos(Math.PI/3)));//y=rcos(beta)
 			final ButtonInterfaceWendy b = buttons[i];
-			b.setColor(color[i]);
-			b.setX((int) (i * 100 * Math.sin(Math.PI/3)));//x=rsin(beta)
-			b.setY((int) (i * 100 * Math.cos(Math.PI/3)));//y=rcos(beta)
-			b.setAction(new Action(){
-				
+			
+			buttons[i].setAction(new Action(){
 				public void act(){
 					if(acceptedInput)
 					{
@@ -126,7 +127,7 @@ public class SimonScreenWendy extends ClickableScreen implements Runnable{
 					}
 				}
 			});
-			addObject(b);
+			addObject(buttons[i]);
 		}
 	}
 
