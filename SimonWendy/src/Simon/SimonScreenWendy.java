@@ -117,6 +117,8 @@ public class SimonScreenWendy extends ClickableScreen implements Runnable{
 						else
 						{
 							progress.gameOver();
+							changeText("GAME OVER");
+							acceptedInput = false;
 							return;
 						}
 						
