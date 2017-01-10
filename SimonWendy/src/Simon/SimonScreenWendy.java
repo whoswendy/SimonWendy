@@ -87,8 +87,8 @@ public class SimonScreenWendy extends ClickableScreen implements Runnable{
 		for(int i = 0; i < numberOfButtons; i++){
 			buttons[i] = getAButton();
 			buttons[i].setColor(color[i]);
-			buttons[i].setX((int) (i * 100 * Math.sin(Math.PI/3)));//x=rsin(beta)
-			buttons[i].setY((int) (i * 100 * Math.cos(Math.PI/3)));//y=rcos(beta)
+			buttons[i].setX((int) (i * 100 * Math.sin(Math.PI/3) + 50));//x=rsin(beta)
+			buttons[i].setY((int) (i * 100 * Math.cos(Math.PI/3) + 80));//y=rcos(beta)
 			final ButtonInterfaceWendy b = buttons[i];
 			
 			b.setAction(new Action(){
