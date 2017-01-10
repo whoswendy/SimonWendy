@@ -31,7 +31,7 @@ public class SimonScreenWendy extends ClickableScreen implements Runnable{
 	@Override
 	public void initAllObjects(ArrayList<Visible> viewObjects) {
 		// TODO Auto-generated method stub
-		addButtons();
+		addButtons(viewObjects);
 		progress = getProgress();
 		label = new TextLabel(130,230,300,40,"Let's play Simon!");
 		moves = new ArrayList<MoveInterfaceWendy>();
@@ -63,21 +63,21 @@ public class SimonScreenWendy extends ClickableScreen implements Runnable{
 	*/
 	private MoveInterfaceWendy getMove(ButtonInterfaceWendy move) {
 		// TODO Auto-generated method stub
-		return null;
+		return new MoveRichard(move);
 	}
 	
 	private ProgressInterfaceWendy getProgress() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ProgressRichard();
 	}
 
 	private ButtonInterfaceWendy getAButton() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ButtonRichard();
 	}
 	
 	
-	private void addButtons() {
+	private void addButtons(ArrayList<Visible> viewObjects) {
 		// TODO Auto-generated method stub
 		int numberOfButtons = 6;
 		//make new buttons
@@ -91,7 +91,7 @@ public class SimonScreenWendy extends ClickableScreen implements Runnable{
 			buttons[i].setY((int) (i * 100 * Math.cos(Math.PI/3)));//y=rcos(beta)
 			final ButtonInterfaceWendy b = buttons[i];
 			
-			buttons[i].setAction(new Action(){
+			b.setAction(new Action(){
 				public void act(){
 					if(acceptedInput)
 					{
@@ -102,11 +102,11 @@ public class SimonScreenWendy extends ClickableScreen implements Runnable{
 								b.highlight();
 								try {
 									Thread.sleep(800);
-									b.dim();
 								} catch (InterruptedException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
+								b.dim();
 							}
 						});
 						blink.start();
@@ -116,7 +116,8 @@ public class SimonScreenWendy extends ClickableScreen implements Runnable{
 						}
 						else
 						{
-							getProgress().gameOver();
+							progress.gameOver();
+							return;
 						}
 						
 						if(sequenceIndex == moves.size())
@@ -127,7 +128,7 @@ public class SimonScreenWendy extends ClickableScreen implements Runnable{
 					}
 				}
 			});
-			addObject(buttons[i]);
+			viewObjects.add(buttons[i]);
 		}
 	}
 
@@ -144,13 +145,14 @@ public class SimonScreenWendy extends ClickableScreen implements Runnable{
 		// TODO Auto-generated method stub
 		acceptedInput = false;
 		rounds ++;
-		randomMove();
-		getProgress().setRound(rounds);
-		getProgress().setSequenceSize(moves.size());
+		progress.setRound(rounds);
+		moves.add(randomMove());
+		progress.setSequenceSize(moves.size());
 		changeText("Simon's Turn");
 		label.setText("");
 		playSequence();
 		changeText("Your Turn");
+		label.setText("");
 		acceptedInput = true;
 		sequenceIndex = 0;
 		
@@ -158,20 +160,38 @@ public class SimonScreenWendy extends ClickableScreen implements Runnable{
 
 	private void playSequence() {
 		// TODO Auto-generated method stub
+		
+	//THIS ONE DOES NOT WORK	
+		
+//		ButtonInterfaceWendy b = null;
+//		for(int i = 0; i < moves.size(); i++)
+//		{
+//			if(b != null)
+//			{
+//				b.dim();
+//			}
+//			b = getAButton();
+//			b.highlight();
+//			int sleepTime = 1000*2/rounds+500;
+//			try {
+//				Thread.sleep(sleepTime);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		b.dim();
 		ButtonInterfaceWendy b = null;
-		for(int i = 0; i < moves.size(); i++)
-		{
-			if(b != null)
-			{
+		for(MoveInterfaceWendy m: moves){
+			if(b!=null){
 				b.dim();
 			}
-			b = getAButton();
+			b = m.getButton();
 			b.highlight();
 			int sleepTime = 1000*2/rounds+500;
-			try {
+			try{
 				Thread.sleep(sleepTime);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -181,6 +201,7 @@ public class SimonScreenWendy extends ClickableScreen implements Runnable{
 	private void changeText(String string) {
 		// TODO Auto-generated method stub
 		try {
+			label.setText(string);
 			Thread.sleep(1000);
 			label.setText(string);
 		} catch (InterruptedException e) {
